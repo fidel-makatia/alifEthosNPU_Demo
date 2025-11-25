@@ -42,6 +42,32 @@ make all                     # Build the firmware
 
 The firmware binary will be at `mnist_npu_demo.bin`.
 
+**Note:** Since we're using `-v $(pwd):/workspace`, the build output files are automatically available on your host machine in the current directory.
+
+### 4. Copy Build Output from Docker (if not using volume mount)
+
+If you ran Docker **without** the `-v` volume mount, you need to copy the build files out manually.
+
+From your **host machine** (open a new terminal, not inside Docker):
+
+```bash
+# Run container with a name (instead of --rm)
+docker run -it --name alif-mnist-build alif-mnist-dev
+
+# ... do your build inside the container ...
+
+# From another terminal on host, copy build files out
+docker cp alif-mnist-build:/workspace/mnist_npu_demo.bin ./
+docker cp alif-mnist-build:/workspace/mnist_npu_demo.elf ./
+docker cp alif-mnist-build:/workspace/mnist_npu_demo.hex ./
+
+# Verify the files
+ls -la mnist_npu_demo.*
+
+# Clean up container when done
+docker rm alif-mnist-build
+```
+
 ### Alternative: Quick Build (without pre-built image)
 
 ```bash
