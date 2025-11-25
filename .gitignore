@@ -1,0 +1,46 @@
+# Build output
+build/
+*.o
+*.elf
+*.bin
+*.hex
+*.map
+*.lst
+*.dis
+*.sym
+
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+.Python
+pip-log.txt
+
+# Model files (generated)
+model/*.tflite
+model/*.npy
+model/*.json
+model/*.png
+model/vela_output/
+
+# Generated headers (from training)
+include/mnist_model_data.h
+include/test_data.h
+include/model_config.h
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Temporary
+*.tmp
+*.temp
+/tmp/
