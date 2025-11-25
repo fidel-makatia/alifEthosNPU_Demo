@@ -93,7 +93,23 @@ make all
 
 ## Flash and Run
 
-### 1. Flash Using SETOOLS
+### 1. Flash Using J-Link (Recommended)
+
+Connect your J-Link to the Alif E8 board, then:
+
+```bash
+# Start J-Link Commander
+JLinkExe -device Cortex-M55 -if SWD -speed 4000 -autoconnect 1
+
+# Inside J-Link Commander, load the binary to flash
+J-Link> loadbin mnist_npu_demo.bin 0x80000000
+
+# Reset and run
+J-Link> r
+J-Link> g
+```
+
+### 2. Flash Using SETOOLS (Alternative)
 
 On your Mac (not in Docker), use Alif's SETOOLS:
 
@@ -109,7 +125,7 @@ app-write-mram -e app
 app-write-mram
 ```
 
-### 2. View Output via RTT
+### 3. View Output via RTT
 
 **Terminal 1** - Connect J-Link:
 ```bash
