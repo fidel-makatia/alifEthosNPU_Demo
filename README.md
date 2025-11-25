@@ -4,20 +4,55 @@ MNIST digit recognition on **Alif Ensemble E8** with **Ethos-U55 NPU** accelerat
 
 Uses **SEGGER RTT** for output - works perfectly on **macOS**!
 
-## 🚀 Quick Start (macOS)
+## Clone and Build with Docker
 
-### 1. Build the Firmware
+### 1. Clone the Repository
 
 ```bash
-# Start Docker
+git clone https://github.com/fidel-makatia/alifEthosNPU_Demo.git
+cd alifEthosNPU_Demo
+```
+
+### 2. Build the Docker Image
+
+```bash
+docker build -t alif-mnist-dev .
+```
+
+This creates a Docker image with all dependencies pre-installed:
+- ARM GCC toolchain (`gcc-arm-none-eabi`)
+- TensorFlow 2.16.1
+- Ethos-U Vela compiler 3.11.0
+- Python with required packages
+
+### 3. Run the Container and Build Firmware
+
+```bash
+# Start the container
+docker run -it --rm -v $(pwd):/workspace alif-mnist-dev
+
+# Inside the container - train model and build firmware
+cd scripts
+python train_mnist.py        # Train MNIST model
+./run_vela.sh                # Optimize for Ethos-U55 NPU
+python generate_headers.py   # Generate C headers
+cd ..
+make all                     # Build the firmware
+```
+
+The firmware binary will be at `mnist_npu_demo.bin`.
+
+### Alternative: Quick Build (without pre-built image)
+
+```bash
+# Start a fresh Ubuntu container
 docker run -it --rm -v $(pwd):/workspace ubuntu:24.04
 
-# Inside Docker
+# Inside Docker - run setup and build
 cd /workspace
 ./setup.sh
 source venv/bin/activate
 
-# Train and build
 cd scripts
 python train_mnist.py
 ./run_vela.sh
@@ -26,7 +61,9 @@ cd ..
 make all
 ```
 
-### 2. Flash Using SETOOLS
+## Flash and Run
+
+### 1. Flash Using SETOOLS
 
 On your Mac (not in Docker), use Alif's SETOOLS:
 
@@ -42,7 +79,7 @@ app-write-mram -e app
 app-write-mram
 ```
 
-### 3. View Output via RTT
+### 2. View Output via RTT
 
 **Terminal 1** - Connect J-Link:
 ```bash
@@ -181,4 +218,3 @@ alif-mnist-npu-demo-rtt/
 ## License
 
 MIT License
-# alifEthosNPU_Demo
