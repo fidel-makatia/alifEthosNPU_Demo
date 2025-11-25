@@ -57,9 +57,13 @@ docker run -it --name alif-mnist-build alif-mnist-dev
 # ... do your build inside the container ...
 
 # From another terminal on host, copy build files out
+# Use container name or ID (e.g., 33eee2df6578)
 docker cp alif-mnist-build:/workspace/mnist_npu_demo.bin ./
 docker cp alif-mnist-build:/workspace/mnist_npu_demo.elf ./
 docker cp alif-mnist-build:/workspace/mnist_npu_demo.hex ./
+
+# Or using container ID directly:
+# docker cp 33eee2df6578:/workspace/mnist_npu_demo.bin ./
 
 # Verify the files
 ls -la mnist_npu_demo.*
